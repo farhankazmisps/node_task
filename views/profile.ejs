@@ -1,0 +1,68 @@
+<!DOCTYPE html> 
+<html> 
+  
+<head> 
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>category Page</title> 
+      
+    <style type="text/css"> 
+        
+ li {
+    position: relative;
+    padding-left: 11px;
+}
+
+
+    </style> 
+
+
+</head> 
+  
+<body> 
+  <nav class="navbar navbar-expand-sm bg-light">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/post">Add more post</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link" href="/logout">LogOut</a>
+    </li>
+  </ul>
+</nav>
+    <h1><center>This is our listing page</center></h1> 
+<div class="container">
+<table class="table">
+  <thead>
+    <tr> 
+      <th scope="col">Name</th>
+      <th scope="col">Password</th>
+      <th scope="col">ACTION</th>
+    </tr>
+  </thead>
+  <tbody>
+ 
+    <tr>
+        <td></td>
+        <td></td>
+        <td> <a href="/useredit/">EDIT</td>
+         <!-- <td><a href="/delete/" onclick="return confirm('Are you sure  to delete this Post ?');">DELETE</td> -->
+    </tr>
+  
+    
+  </tbody>
+</table>
+
+      <input type="submit" name="submit" class="btn btn-info" value="back" onclick="goBack()">
+   
+</div>
+</body> 
+  <script>
+function goBack() {
+  window.location = "http://192.168.0.64:3005/home";
+}
+</script>
+</html> 

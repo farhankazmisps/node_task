@@ -1,0 +1,87 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #17a2b8;
+  height: 100vh;
+}
+#login .container #login-row #login-column #login-box {
+  margin-top: 120px;
+  max-width: 600px;
+  height: 320px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+#login .container #login-row #login-column #login-box #login-form {
+  padding: 20px;
+}
+#login .container #login-row #login-column #login-box #login-form #register-link {
+  margin-top: -85px;
+}
+.btn.btn-info.btn-md.back {
+    float: right;
+}
+</style>
+<body>
+  <nav class="navbar navbar-expand-sm bg-light">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/post">Add more post</a>
+    </li>
+   <!--  <li class="nav-item">
+      <a class="nav-link" href="/profile">Profile</a>
+    </li> -->
+    
+    <li class="nav-item">
+      <a class="nav-link" href="/logout">Logout</a>
+    </li>
+  </ul>
+</nav>
+    <div id="login">
+        <h1 class="text-center text-white pt-5"><center>This is our post page</center> </h1>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/post/edit/<%= user.id%>" method="POST">
+                            <div class="form-group">
+                                <label for="username" class="text-info">Title:</label><br>
+                                <input type="text" name="title" value="<%= user.title%>" id="title" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                 <label for="password" class="text-info">Your post</label><br>
+                                 <textarea rows="4" cols="50" class="form-control" name="post" placeholder="post with max character 300" required><%= user.post%></textarea> 
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Update">
+                                <input type="submit" name="submit" class="btn btn-info btn-md back" value="back" onclick="goBack()">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+function goBack() {
+  window.history.back();
+}
+
+ $('#login-form').validate({ // initialize the plugin
+        rules: {
+            title: {
+                required: true,
+                
+            },
+            post: {
+                required: true,
+                minlength: 5
+            }
+        }
+    });
+</script>
