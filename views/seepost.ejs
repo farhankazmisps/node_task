@@ -12,7 +12,7 @@ body {
 #login .container #login-row #login-column #login-box {
   margin-top: 120px;
   max-width: 600px;
-  height: 495px;
+  height: 386px;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
 }
@@ -47,35 +47,12 @@ body {
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="/post/edit/<%= user.id%>" method="POST">
-                            <div class="form-group">
-                                <label for="username" class="text-info">Title:</label><br>
-                                <input type="text" name="title" value="<%= user.title%>" id="title" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                 <label for="password" class="text-info">Your post</label><br>
-                                 <textarea rows="4" cols="50" class="form-control" name="post" placeholder="post with max character 300" required><%= user.post%></textarea> 
-                             </div>
-                               <div class="form-group">
-                              <label for="category" class="text-info">Select category</label><br>
-                              <input type="text" name="category" value="<%= user.category%>" id="category" class="form-control" required> 
-                            </div> 
-                              <div class="form-group">
-                                 <label for="status" class="text-info">Status</label><br>
-                                  <select class="form-control" id="status" name="status" required>
-                                     <option value="Published">Published</option>
-                                      <option value="UnPublished">UnPublished</option>
+                                <h1><%= user.title%></h1>
+                                <h3><%= user.post%> </h3>
 
-                                  </select>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Update">
                                 <input type="submit" name="submit" class="btn btn-info btn-md back" value="back" onclick="goBack()">
-                            </div>
-                        </form>
+                           
+                       
                     </div>
                 </div>
             </div>

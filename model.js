@@ -26,6 +26,9 @@ module.exports.User = sequelize.define('posts', {
     category:{
         type: Sequelize.STRING,
     },
+    status:{
+        type: Sequelize.STRING,
+    },
 },{tableName:'posts',timestamps: false})
 
 
@@ -52,3 +55,16 @@ module.exports.Users = sequelize.define('login', {
     },
     
 },{tableName:'login',timestamps: false})
+
+module.exports.categorys = sequelize.define('category', {
+    id:{
+        type: Sequelize.INTEGER, 
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    newcategory:{
+        type: Sequelize.STRING,
+    },
+    
+    
+},{tableName:'category',timestamps: false})

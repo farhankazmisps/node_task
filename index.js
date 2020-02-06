@@ -25,13 +25,13 @@ app.use(bodyParser.json())
 app.set('trust proxy', 1)
 app.use(cookieParser());
 app.use(session({
-  'secret': '343ji43j4n3jn4jk3n',
-  saveUninitialized: false,
-  resave: false,
-cookie:{maxAge:6000}
+    'secret': '1234',
+    saveUninitialized: false,
+    resave: false,
+    cookie:{maxAge:60000}
 }))
 app.use(flash());
-
+var sess = {};
 
 app.set('view engine', 'ejs'); 
 
@@ -48,18 +48,42 @@ app.get('/', function(req,res){
 
   app.get('/home',function(req,res){
     
-   res.render('home');
+    sess = req.session;
+    if (sess.loggedIn=='true') {
+        console.log('user already logged in')
+        return res.render('home');
+    }else{
+        console.log('user not logged in')
+        return res.redirect('/newlogin');
+    }
 })
 
  app.get('/post', function(req,res){
-   res.render('post');
+
+
+   sess = req.session;
+    if (sess.loggedIn=='true') {
+        console.log('user already logged in')
+        return res.render('post');
+    }else{
+        console.log('user not logged in')
+        return res.redirect('/newlogin');
+    }
 })
 
 app.get('/new', function(req,res){
    res.render('new');
 }) 
 app.get('/newlogin', function(req,res){
-   res.render('newlogin',{data:data});
+    sess = req.session;
+    // console.log(sess)
+    if (sess.loggedIn=='true') {
+        console.log('user already logged in')
+        return res.redirect('home');
+    }else{
+        console.log('user not logged in')
+        return res.render('newlogin',{data:data});
+    }
 }) 
 
 app.get('/signup', function(req,res){
@@ -68,9 +92,14 @@ app.get('/signup', function(req,res){
 app.get('/profile', function(req,res){
    res.render('profile');
 }) 
+
 app.get('/login/user', function(req,res){
-   res.render('home');
+   res.redirect('home');
 })
+
+app.get('/seepost', function(req,res){
+   res.render('seepost');
+}) 
 
 // Signup Api
 
@@ -104,7 +133,7 @@ app.post('/login',function(req,res){
 
 
 }else{ 
-      data.passwordError = 'both password not matched.';
+      data.passwordError = 'confirm password not matched.';
   return res.render('login', {data:data});}
  
   },error=>{
@@ -129,7 +158,7 @@ app.post('/login/user',function(req,res, next){
             // password:password
         }
     }).then(userEmail=> {
-     
+        sess = req.session;
         if(userEmail){
          
             Model.Users.findOne({
@@ -139,18 +168,15 @@ app.post('/login/user',function(req,res, next){
                 }
             }).then(userData=> {
                 if(userData){
-                  if(req.session.loggedIn){
-                      
-                     next();
-                    }
-
-                  req.session.email = email;
-                  req.session.password = password;
-                    req.session.loggedIn=true;
-
-                    return res.render('home');  
+                    sess.loggedIn   = 'true';
+                    sess.email      = email;
+                    // req.session.password = password;
+                    // req.session.loggedIn=true;
+                    // console.log(req.session.email);
+                    // console.log(req.session.password);
+                    return res.redirect('/home');  
                 }else{
-                    data.passwordError = 'Password does not matched.';
+                    data.passwordError = 'Email and Password does not matched.';
                     return res.render('newlogin',{data:data});
                 }
             },error=>{
@@ -159,9 +185,9 @@ app.post('/login/user',function(req,res, next){
                     error:error
                 })
             })
-            // return res.render('home');  
+            // return res.redirect('home');  
         }else{
-            data.emailError = 'Email does not matched.';
+            data.emailError = 'Email and Password does not matched.';
             return res.render('newlogin',{data:data});
         }
       
@@ -185,32 +211,56 @@ app.post('/login/user',function(req,res, next){
 
 
 app.get('/logout', function(req, res, next) {
-  
+    // console.log(req.session);
     // delete session object
-    req.session.destroy(function(err) {
-      if(err) {
-        return next(err);
-      } else {
+    // req.session.destroy(function(err,resp) {
+    //   if(err) {
+    //     console.log('err',err)
+    //   } else {
+    //     console.log('resp',resp)
+    //     return res.redirect('/newlogin');
+    //   }
+    // });
+
+    req.session.destroy((err) => {
+        if(err) {
+            return console.log('err',err);
+        }
+        // console.log('resp',resp)
         return res.redirect('/newlogin');
-      }
+
     });
   
 });
 
 
 
-// User create Api
 
-app.post('/post/add',function(req,res){
-  
+
+// User insert post
+
+app.post('/post/add',function(req,res, next){
+ 
   var data = req.body;
-  
+  var title = req.body.title;
+  var newcategory = req.body.category;
+  //console.log(data);
 
   Model.User.create({
     title:data.title,
     post:data.post,
+    status:data.status,
     category:data.category
-  }).then(userData=> {
+
+  })
+
+
+Model.categorys.findAll().then(User => {
+      console.log(JSON.stringify(User));  
+      //console.log(User.length);  
+       console.log('farhan');  
+      
+    }).then(userData=> {
      req.flash('notify', 'post inserted successful!')
    return res.redirect('/new');
 
@@ -221,10 +271,9 @@ app.post('/post/add',function(req,res){
       error:error
     })
   })
+
 })
-
-
-// User read Api
+// User see all post
 
   app.get('/select',function(req,res){
 
@@ -232,22 +281,14 @@ app.post('/post/add',function(req,res){
         if (resp =='error') {
             console.log('error')
         }else{
+          console.log(resp);
             res.render('category',{
+
                 user: resp
             })
         }
     });
-   // Model.User.findAll().then(user => {
-   //      res.render('category',{
-   //          user: user
-   //      })
-   // }).catch(error => res.send({
-   //      error: true,
-   //      user: [],
-   //      error: error
-   //  });
 })
-
 
 function getAllUser(callback) {
     Model.User.findAll().then(data=>{
@@ -316,6 +357,32 @@ app.get('/edit/:id', function(req,res){
    })
 })
 
+
+// see post
+
+    app.get('/seepost/:id', function(req,res){
+   var id = req.params.id;
+    
+ 
+   Model.User.findOne({
+    where:{
+        id:id
+    }
+   }).then(user => {
+          console.log(user);
+        res.render('seepost',{
+            user: user
+        })
+   }).catch(error => {
+        res.send({
+            error: true,
+            user: [],
+            error: error
+        });
+   })
+})
+
+
 // update query
 
 app.post('/post/edit/:id',function(req,res){
@@ -327,6 +394,8 @@ app.post('/post/edit/:id',function(req,res){
   Model.User.update({
     title:data.title,
     post:data.post,
+     status:data.status,
+    category:data.category
   },{
     where:{
         id:id
@@ -341,10 +410,4 @@ app.post('/post/edit/:id',function(req,res){
     })
   })
 })
-
-
-//select login user data
-
-
-
 app.listen(3005, '192.168.0.64');

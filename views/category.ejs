@@ -39,6 +39,9 @@ border-color:
     <li class="nav-item">
       <a class="nav-link" href="/post">Add more post</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/select">See All post</a>
+    </li>
    <!--  <li class="nav-item">
       <a class="nav-link" href="/profile">Profile</a>
     </li> -->
@@ -48,24 +51,31 @@ border-color:
     </li>
   </ul>
 </nav>
-    <h1><center>This is our listing page</center></h1> 
+    <h1><center>This is our Published post</center></h1> 
 <div class="container">
 <table class="table">
   <thead>
     <tr> 
       <th scope="col">TITLE</th>
       <th scope="col">POST</th>
+      <th scope="col">Category</th>
       <th scope="col">ACTION</th>
     </tr>
   </thead>
   <tbody>
     <% for(var i=0; i < user.length; i++) { %>
-    <tr>
+    <% if(user[i].status == 'UnPublished') {  %>
+    
+    <% } else {%>
+             <tr>
       <td><%= user[i].title %></td>
         <td><%= user[i].post %></td>
+        <td><%= user[i].category %></td>
         <td> <a href="/edit/<%= user[i].id %>">EDIT</td>
          <td><a href="/delete/<%= user[i].id %>" onclick="return confirm('Are you sure  to delete this Post ?');">DELETE</td>
+           <td> <a href="/seepost/<%= user[i].id %>">See Post</td>
     </tr>
+    <%  } %>
     <% } %>
     
   </tbody>
@@ -76,6 +86,41 @@ border-color:
 <% } else {%>
     <div class="" id="deletesuccess"></div> 
 <% } %>
+
+   <h1><center>This is our UnPublished post</center></h1> 
+
+ <table class="table">
+  <thead>
+    <tr> 
+      <th scope="col">TITLE</th>
+      <th scope="col">POST</th>
+      <th scope="col">ACTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i < user.length; i++) { %>
+    <% if(user[i].status == 'UnPublished') {  %>
+            <tr>
+      <td><%= user[i].title %></td>
+        <td><%= user[i].post %></td>
+        <td> <a href="/edit/<%= user[i].id %>">Click here to publish</td>
+       
+    </tr>
+    <% } else {%>
+       
+    <%  } %>
+    <% } %>
+    
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
 
       <input type="submit" name="submit" class="btn btn-info" value="back" onclick="goBack()">
    

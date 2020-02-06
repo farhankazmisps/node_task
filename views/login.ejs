@@ -3,11 +3,48 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
  <style>
- body { 
+         body { 
            
           background-color: #cccccc;
              
-        } 
+             } 
+      
+        #pass
+            {
+             margin-left:25%;
+             height:45px;
+             width:500px;
+             border-radius:3px;
+             border:1px solid grey;
+             padding:10px;
+             font-size:18px;
+            }
+        #meter_wrapper
+            {
+             border:1px solid grey;
+             margin-left:38%;
+             margin-top:20px;
+             width:200px;
+             height:35px;
+             border-radius:3px;
+            }
+        #meter
+            {
+             width:0px;
+             height:5px;
+             border-radius:
+            }
+        #pass_type
+            {
+             font-size:16px;
+             margin-top:7px;
+             /*margin-left:45%;
+             text-align:center;
+             color:grey;*/
+            }
+         #error{
+            color:red;
+         }   
     </style>
     <div class="container">   
      
@@ -25,26 +62,26 @@
                                     
                              <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="name" type="text" class="form-control" name="name" value="" placeholder="Name" onkeypress="return (event.charCode > 64 && 
-    event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" required>                                        
+                                        <input id="name" type="text" class="form-control" value="<%= data.name%>" name="name" placeholder="Name" onKeyPress="return ValidateAlpha(event);" required>                                        
                                     </div>
 
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="email" type="text" class="form-control" name="email" placeholder="E-mail" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" required> 
-                                        <h5><%= data.emailError%> </h5>                                    
-                                    </div>
+                                        <input id="email" type="text" class="form-control" name="email" placeholder="E-mail" value="<%= data.email%>" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" required>                          
+                                    </div><h5 id="error"><%= data.emailError%> </h5>
                                 
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                         <input id="login-password" type="password" class="form-control" name="password" placeholder="Password" required>
-                                    </div>
+                                     </div>
+                                      <div id="meter"></div>
+                                      <span id="pass_type"></span>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                         <input id="Confirm-password" type="password" class="form-control" name="confirm" placeholder="Confirm-Password" required>
-                                        <h5><%= data.passwordError%> </h5>
                                     </div>
+                                    <h5><%= data.passwordError%> </h5>
                              
                                 <div style="margin-top:10px" class="form-group">
                                     <!-- Button -->
@@ -72,4 +109,68 @@
                         </div>                     
                     </div>  
         </div>
+        <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+ $("#login-password").keyup(function(){
+  check_pass();
+ });
+});
+
+function check_pass()
+{
+ var val=document.getElementById("login-password").value;
+ var meter=document.getElementById("meter");
+ var no=0;
+ if(val!="")
+ {
+  // If the password length is less than or equal to 6
+  if(val.length<=4)no=1;
+
+  // If the password length is greater than 6 and contain any lowercase alphabet or any number or any special character
+  if(val.length>4 && (val.match(/[a-z]/) || val.match(/\d+/) || val.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)))no=2;
+
+  // If the password length is greater than 6 and contain alphabet,number,special character respectively
+  if(val.length>6 && ((val.match(/[a-z]/) && val.match(/\d+/)) || (val.match(/\d+/) && val.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)) || (val.match(/[a-z]/) && val.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/))))no=3;
+
+  if(no==1)
+  {
+   $("#meter").animate({width:'25px'},300);
+   meter.style.backgroundColor="red";
+   document.getElementById("pass_type").innerHTML="Very Weak";
+  }
+
+  if(no==2)
+  {
+   $("#meter").animate({width:'50px'},300);
+   meter.style.backgroundColor="yellow";
+   document.getElementById("pass_type").innerHTML="Weak";
+  }
+
+  if(no==3)
+  {
+   $("#meter").animate({width:'75px'},300);
+   meter.style.backgroundColor="green";
+   document.getElementById("pass_type").innerHTML="Strong";
+  }
+ }
+
+ else
+ {
+  meter.style.backgroundColor="white";
+  document.getElementById("pass_type").innerHTML="";
+ }
+}
+
+
+// alphabet validation
+  function ValidateAlpha(evt)
+    {
+        var keyCode = (evt.which) ? evt.which : evt.keyCode
+        if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32)
+         
+        return false;
+            return true;
+    }
+</script>
        

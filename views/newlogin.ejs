@@ -8,11 +8,14 @@
 
     </script>
     <style>
- body { 
+       body { 
            
           background-color: #cccccc;
              
-        } 
+         } 
+        #error{
+            color:red;
+         } 
     </style>
 <!------ Include the above in your HEAD tag ---------->
 <div class="container">
@@ -37,13 +40,12 @@
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="email" type="email" class="form-control" name="email" placeholder="E-mail" required>   
-                        <h5><%= data.emailError%> </h5>
-                    </div>
+                        
+                    </div><h5 id="error"><%= data.emailError%> </h5>
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="login-password" type="password" class="form-control" name="password" placeholder="Password" required>
-                        <h5><%= data.passwordError%> </h5>
-                    </div>
+                    </div><h5 id="error"><%= data.passwordError%> </h5>
                     <div style="margin-top:10px" class="form-group">
                         <!-- Button -->
                         <div class="col-sm-12 controls">
